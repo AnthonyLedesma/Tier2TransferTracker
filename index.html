@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>SWAT Transfer Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.5/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.5/js/uikit-icons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/1.0.8/purify.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.5/css/uikit.min.css" />
+    <style>
+
+        .tg-list {
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+.tg-list-item {
+  margin: 0 2em;
+}
+
+.tgl {
+  display: none;
+}
+.tgl, .tgl:after, .tgl:before, .tgl *, .tgl *:after, .tgl *:before, .tgl + .tgl-btn {
+  box-sizing: border-box;
+}
+.tgl::-moz-selection, .tgl:after::-moz-selection, .tgl:before::-moz-selection, .tgl *::-moz-selection, .tgl *:after::-moz-selection, .tgl *:before::-moz-selection, .tgl + .tgl-btn::-moz-selection {
+  background: none;
+}
+.tgl::selection, .tgl:after::selection, .tgl:before::selection, .tgl *::selection, .tgl *:after::selection, .tgl *:before::selection, .tgl + .tgl-btn::selection {
+  background: none;
+}
+.tgl + .tgl-btn {
+  outline: 0;
+  display: block;
+  width: 4em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.tgl + .tgl-btn:after, .tgl + .tgl-btn:before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+}
+.tgl + .tgl-btn:after {
+  left: 0;
+}
+.tgl + .tgl-btn:before {
+  display: none;
+}
+.tgl:checked + .tgl-btn:after {
+  left: 50%;
+}
+
+.tgl-flip + .tgl-btn {
+  padding: 2px;
+  transition: all .2s ease;
+  font-family: sans-serif;
+  -webkit-perspective: 100px;
+          perspective: 100px;
+}
+.tgl-flip + .tgl-btn:after, .tgl-flip + .tgl-btn:before {
+  display: inline-block;
+  transition: all .4s ease;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  line-height: 2em;
+  font-weight: bold;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  border-radius: 4px;
+}
+.tgl-flip + .tgl-btn:after {
+  content: attr(data-tg-on);
+  background: #02C66F;
+  -webkit-transform: rotateY(-180deg);
+          transform: rotateY(-180deg);
+}
+.tgl-flip + .tgl-btn:before {
+  background: #FF3A19;
+  content: attr(data-tg-off);
+}
+.tgl-flip + .tgl-btn:active:before {
+  -webkit-transform: rotateY(-20deg);
+          transform: rotateY(-20deg);
+}
+.tgl-flip:checked + .tgl-btn:before {
+  -webkit-transform: rotateY(180deg);
+          transform: rotateY(180deg);
+}
+.tgl-flip:checked + .tgl-btn:after {
+  -webkit-transform: rotateY(0);
+          transform: rotateY(0);
+  left: 0;
+  background: #7FC6A6;
+}
+.tgl-flip:checked + .tgl-btn:active:after {
+  -webkit-transform: rotateY(20deg);
+          transform: rotateY(20deg);
+}</style>
+</head>
+
+<body>
+    <div class="uk-scope">
+        <div class="uk-grid-collapse uk-child-width-expand@m" uk-grid>
+            <!-- Grid Section with standard padding added, main input content -->
+            <div class="uk-padding ">
+                <div class="uk-container uk-flex uk-padding-remove uk-padding-remove-left uk-margin-remove-left">
+                    <h2 class="uk-heading-bullet">SWAT Transfer Tracker</h2>
+                    <div class="uk-alert-danger uk-text-center uk-text-capitalize uk-margin-remove-vertical uk-margin-left"
+                        id="errorPTag" hidden="hidden" uk-alert>
+                        <p class="uk-text-bold uk-text-capitalize uk-text-large" id="errorP"> Error text goes here</p>
+                    </div>
+                </div>
+                <!-- Form with labels on top of controls -->
+                <form class="uk-form-stacked">
+                    <!-- form section-->
+
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="domainsBox">Enter The Domain(s) Here.</label>
+                        <div class="uk-form-controls uk-flex">
+                            <input class="uk-input" type="text" id="domainsBox" placeholder="Enter Domain(s) Here"></input>
+                            <div class="uk-width-1-4@s uk-margin-left">
+                                <label><input class="uk-checkbox" type="checkbox" id="domainsNA" name="checkboxNA"> Not
+                                    Applicable </label>
+                                <p class="uk-text-meta uk-text-small uk-margin-remove-vertical uk-text-danger" hidden="hidden"
+                                    id="mustDomain">Must
+                                    Enter Domain</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="guidBox">Enter The GUID Here.</label>
+                        <div class="uk-form-controls uk-flex">
+                            <input class="uk-input" type="text" id="guidBox" placeholder="Enter GUID Here"></input>
+                            <div class="uk-width-1-4@s uk-margin-left">
+                                <label><input class="uk-checkbox" type="checkbox" id="guidNA" name="checkboxNA"> Not
+                                    Applicable </label>
+                                <p class="uk-text-meta uk-text-small uk-margin-remove-vertical uk-text-danger" hidden="hidden"
+                                    id="mustGuid">Must
+                                    Enter GUID</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="uk-child-width-expand@s" uk-grid>
+                        <div>
+                            <h4>Customer Demeanor At Time of Transfer?</h4>
+                            <ul class="uk-list uk-list-large uk-list-default">
+                                <div class="uk-alert-danger" uk-alert>
+                                    <li><label><input class="uk-radio" name="radioDemeanor" id="radioNeutral" type="radio">
+                                            Neutral
+                                        </label></li>
+                                    <li><label><input class="uk-radio" name="radioDemeanor" id="radioNegative" type="radio">
+                                            Negative
+                                        </label></li>
+                                </div>
+                                <div class="uk-alert-success" uk-alert>
+                                    <li><label><input class="uk-radio" name="radioDemeanor" id="radioPositive" type="radio">
+                                            Positive
+                                        </label></li>
+                                </div>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4>Transfer Agent Fully Explained/Noted The Issue?</h4>
+                            <ul class="uk-list uk-list-large uk-list-default">
+                                <div class="uk-alert-danger" uk-alert>
+                                    <li><label><input class="uk-radio" name="radioUnderstanding" id="radioNo" type="radio">
+                                            Limited Or
+                                            No Explanation </label></li>
+                                    <li><label><input class="uk-radio" name="radioUnderstanding" id="radioMisUnder"
+                                                type="radio">
+                                            Misunderstood the issue</label></li>
+                                </div>
+
+                                <div class="uk-alert-success" uk-alert>
+                                    <li><label><input class="uk-radio" name="radioUnderstanding" id="radioYes" type="radio">
+                                            Yes</label>
+                                    </li>
+                                </div>
+
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="uk-child-width-expand@s uk-margin-remove-top" uk-grid>
+
+                        <div>
+                            <h4>Call Attributes</h4>
+                            <ul class="uk-list uk-list-large uk-list-default">
+                                <div class="uk-alert-danger" uk-alert>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="OOS" name="CallAttributes">
+                                            Inquiry Out
+                                            Of Scope / Scope Enforcement </label></li>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="multiple" name="CallAttributes">
+                                            Issue
+                                            Persisting After Multiple Calls </label></li>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="misinform" name="CallAttributes">
+                                            Caused
+                                            By Customer Being Misinformed/Sold </label></li>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="expectations" name="CallAttributes">
+                                            Improper Expecations Set For Service Or Product </label></li>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="common" name="CallAttributes">
+                                            Common Knowledge / Training Needed </label></li>
+                                </div>
+                                <div class="uk-alert-success" uk-alert>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="goodTransfer" name="CallAttributes">
+                                            Good
+                                            Transfer </label></li>
+                                </div>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4>Training Opportunities</h4>
+                            <ul class="uk-list uk-list-large uk-list-default">
+                                <div class="uk-alert-danger" uk-alert>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="tribal" name="TrainingOpp">
+                                            Agent
+                                            Training For Tribal Knowledge/Use Of Resources </label>
+                                    </li>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="standardProc" name="TrainingOpp">
+                                            Standard Procedure For All Agents (Scope Of Support) </label></li>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="contentDiscovery" name="TrainingOpp">
+                                            Agent Did Not Discover That Issue Is Content Related </label></li>
+                                </div>
+                                <div class="uk-alert-success" uk-alert>
+                                    <li><label><input class="uk-checkbox" type="checkbox" id="NoTraining" name="TrainingOpp">
+                                            None
+                                        </label></li>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+                <div class="uk-margin uk-padding-top" uk-margin>
+                    <button id="parseButton" class="uk-button uk-button-primary">Parse</button>
+                    <button id="resetButton" class="uk-button uk-button-default">Reset / Clear</button>
+                    <button id="SubmitSlack" class="uk-button uk-button-danger" disabled="disabled">Submit To Slack</button>
+                    <div class="uk-alert-warning uk-margin-left uk-flex-inline" uk-alert>
+                        <h4 class="uk-margin-remove-bottom">Ticket Created After Transfer?</h4>
+                        <li class="tg-list-item uk-margin-remove-right">
+                            <input class="tgl tgl-flip" id="ticketCheckbox" type="checkbox" />
+                            <label class="tgl-btn uk-margin-remove-bottom uk-margin-remove-right" data-tg-off="Nope"
+                                data-tg-on="Yes" for="ticketCheckbox"></label>
+                        </li>
+                    </div>
+                </div>
+            </div>
+            <!-- Parse and reset buttons need to be outside of form -->
+        </div>
+
+
+        <div class="uk-card uk-card-default uk-card-body uk-background-muted uk-text-center">
+            <h3 class="uk-card-title">Instructions:</h3>
+            <ul class="uk-list uk-list-divider uk-text-capitalize uk-text-bold uk-margin-top">
+                <li>1. Enter Domain And/Or Guid Relevant To Call</li>
+                <li>2. Choose Attribute(s) That Best Match The Call</li>
+                <li>3. Click the Parse Button Once Completed</li>
+                <li>4. Click The Red 'Submit To Slack' Button</li>
+                <li>All Done!</li>
+            </ul>
+        </div>
+
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script type='text/javascript' src="./index.js"></script>
+</body>
+
+</html>
